@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — AI HUB Agentic</title>
+<meta name="description" content="Case studies of AI agents, scripting automations, and multi-agent pipelines — with architecture, code, and what broke.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">AI HUB <span class="brand-tag">Agentic</span></a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="blog.html">Field Notes</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<section class="article-head" style="padding-bottom:32px;">
+  <div class="wrap">
+    <p class="eyebrow">The project journal</p>
+    <h1 style="max-width:26ch;">Every agent and automation I've shipped, documented in full.</h1>
+    <p class="lede" style="max-width:60ch;">Filter by what you're trying to learn. Each entry links to a full case study with architecture, code, and lessons learned.</p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap">
+    <div class="filter-row">
+      <button class="chip active" data-filter="all">All entries</button>
+      <button class="chip" data-filter="agents">Multi-Agent Systems</button>
+      <button class="chip" data-filter="scripting">Scripting Agents</button>
+      <button class="chip" data-filter="automation">Automation</button>
+      <button class="chip" data-filter="ml">ML / Data</button>
+    </div>
+
+    <div class="grid-3">
+
+      <div class="card" data-tags="agents">
+        <span class="status status-live">Live</span>
+        <div class="entry-num" style="margin-top:14px;">Log 004</div>
+        <div class="pipeline-strip">
+          <span class="node">search</span><span class="arrow">→</span>
+          <span class="node">analyst</span><span class="arrow">→</span>
+          <span class="node">fact-check</span><span class="arrow">→</span>
+          <span class="node">writer</span>
+        </div>
+        <h3>Autonomous Research Pipeline</h3>
+        <p>Four agents turn a one-line topic into a sourced, fact-checked research brief — no human in the loop until final review.</p>
+        <div class="card-foot">
+          <span class="tag">Multi-Agent</span>
+          <a href="project-autonomous-research-pipeline.html" class="read-link">Read case study →</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="scripting,automation">
+        <span class="status status-live">Live</span>
+        <div class="entry-num" style="margin-top:14px;">Log 003</div>
+        <div class="pipeline-strip">
+          <span class="node">watcher</span><span class="arrow">→</span>
+          <span class="node">diagnoser</span><span class="arrow">→</span>
+          <span class="node">patcher</span>
+        </div>
+        <h3>Site Monitor &amp; Self-Heal Agent</h3>
+        <p>A scripting agent that watches uptime, diagnoses the failure class, and opens a draft fix for engineers to approve.</p>
+        <div class="card-foot">
+          <span class="tag">Scripting</span>
+          <a href="#" class="read-link">Read case study →</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="agents,automation">
+        <span class="status status-progress">In progress</span>
+        <div class="entry-num" style="margin-top:14px;">Log 005</div>
+        <div class="pipeline-strip">
+          <span class="node">classifier</span><span class="arrow">→</span>
+          <span class="node">drafter</span><span class="arrow">→</span>
+          <span class="node">escalator</span>
+        </div>
+        <h3>Inbox Triage Swarm</h3>
+        <p>A small swarm of agents that categorizes incoming mail, drafts replies for routine cases, and escalates ambiguous ones.</p>
+        <div class="card-foot">
+          <span class="tag">Automation</span>
+          <a href="#" class="read-link">Read case study →</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="automation,ml">
+        <span class="status status-live">Live</span>
+        <div class="entry-num" style="margin-top:14px;">Log 002</div>
+        <div class="pipeline-strip">
+          <span class="node">transcriber</span><span class="arrow">→</span>
+          <span class="node">clipper</span><span class="arrow">→</span>
+          <span class="node">formatter</span>
+        </div>
+        <h3>Content Repurposing Pipeline</h3>
+        <p>Turns one long-form video into a week of platform-native posts — an agent chain for transcription, clipping, and formatting.</p>
+        <div class="card-foot">
+          <span class="tag">Automation</span>
+          <a href="#" class="read-link">Read case study →</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="ml,scripting">
+        <span class="status status-archived">Archived</span>
+        <div class="entry-num" style="margin-top:14px;">Log 001</div>
+        <div class="pipeline-strip">
+          <span class="node">crawler</span><span class="arrow">→</span>
+          <span class="node">cleaner</span><span class="arrow">→</span>
+          <span class="node">embedder</span>
+        </div>
+        <h3>Docs-to-RAG Ingestion Script</h3>
+        <p>A scheduled script that crawls a documentation site, cleans and chunks it, and re-embeds anything that changed since the last run.</p>
+        <div class="card-foot">
+          <span class="tag">ML / Data</span>
+          <a href="#" class="read-link">Read case study →</a>
+        </div>
+      </div>
+
+      <div class="card" data-tags="agents,ml">
+        <span class="status status-progress">In progress</span>
+        <div class="entry-num" style="margin-top:14px;">Log 006</div>
+        <div class="pipeline-strip">
+          <span class="node">planner</span><span class="arrow">→</span>
+          <span class="node">coder</span><span class="arrow">→</span>
+          <span class="node">tester</span>
+        </div>
+        <h3>Self-Testing Code Agent</h3>
+        <p>A planner agent breaks a ticket into steps; a coder agent implements them; a tester agent won't let a step pass without a green test.</p>
+        <div class="card-foot">
+          <span class="tag">Multi-Agent</span>
+          <a href="#" class="read-link">Read case study →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap" style="text-align:center; max-width:640px;">
+    <p class="eyebrow" style="justify-content:center;">More coming</p>
+    <h2 style="font-size:clamp(22px,3vw,28px);">This journal grows as new projects ship.</h2>
+    <p>Each new entry gets its own case study page — architecture, code, and the parts that broke.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px;">AI HUB <span class="brand-tag">Agentic</span></div>
+        <p style="font-size:14px; max-width:32ch;">A working lab notebook on AI agents, scripting, and automation — published as case studies, not sales pages.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="blog.html">Field notes</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="projects.html">Multi-Agent Systems</a></li>
+          <li><a href="projects.html">Scripting Agents</a></li>
+          <li><a href="projects.html">Automation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://github.com" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AI HUB — Agentic</span>
+      <span>Built &amp; documented by hand</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

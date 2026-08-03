@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autonomous Research Pipeline — AI HUB Agentic</title>
+<meta name="description" content="Case study: a four-agent pipeline that turns a topic into a sourced, fact-checked research brief.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">AI HUB <span class="brand-tag">Agentic</span></a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="blog.html">Field Notes</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<section class="article-head">
+  <div class="wrap">
+    <div class="article-meta">
+      <span class="mono">Log 004</span>
+      <span>·</span>
+      <span class="status status-live">Live</span>
+      <span>·</span>
+      <span>Multi-Agent Systems</span>
+      <span>·</span>
+      <span>11 min read</span>
+    </div>
+    <h1>Autonomous Research Pipeline</h1>
+    <p class="lede" style="max-width:60ch;">Four agents — search, analyst, fact-check, and writer — cooperating through a shared task queue to turn a one-line topic into a sourced, structured research brief.</p>
+    <div class="pipeline-strip" style="margin-top:24px;">
+      <span class="node">search_agent</span><span class="arrow">→</span>
+      <span class="node">analyst_agent</span><span class="arrow">→</span>
+      <span class="node">factcheck_agent</span><span class="arrow">→</span>
+      <span class="node">writer_agent</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap prose">
+
+    <p><strong>The brief:</strong> produce a research memo good enough to open a strategy meeting with, from nothing but a topic string, in under five minutes, without a human touching a search bar.</p>
+
+    <h2>Why a single agent wasn't enough</h2>
+    <p>The first version of this was one agent with a search tool and a big system prompt telling it to "research thoroughly." It worked for shallow topics and fell apart on anything contested — it would settle on the first plausible-sounding source, present a single narrative as consensus, and never flag its own uncertainty. The failure wasn't the model; it was the design. One agent playing four roles at once has no natural point to disagree with itself.</p>
+
+    <p>Splitting the job into four agents with narrow, single-purpose responsibilities fixed most of this — not because any individual agent got smarter, but because the pipeline now has a structural place for verification to happen.</p>
+
+    <div class="callout">
+      <span class="label">Core idea</span>
+      <p>Give each agent one job and one tool set. Let disagreement between agents — not confidence within one agent — be the thing that catches errors.</p>
+    </div>
+
+    <h2>The architecture</h2>
+    <p>The pipeline runs as an orchestrator pattern: a lightweight controller script passes a task object down the chain, and each agent reads from and appends to it rather than starting from scratch.</p>
+
+    <ul>
+      <li><strong>search_agent</strong> — takes the topic, generates 4–6 query variants, hits a search API, and deduplicates sources by domain and content similarity before passing along the top 10–15.</li>
+      <li><strong>analyst_agent</strong> — reads the source set, clusters findings into themes, and explicitly tags where sources disagree instead of averaging the disagreement away.</li>
+      <li><strong>factcheck_agent</strong> — takes only the analyst's specific factual claims (not the whole draft) and independently re-searches each one, flagging anything it can't verify from at least two sources.</li>
+      <li><strong>writer_agent</strong> — assembles the final brief, and is instructed to keep flagged/unverified claims visibly marked rather than smoothing them into confident prose.</li>
+    </ul>
+
+    <pre><code>task = {
+  "topic": input_topic,
+  "sources": [],
+  "themes": [],
+  "flagged_claims": [],
+  "draft": None
+}
+
+for agent in [search_agent, analyst_agent, factcheck_agent, writer_agent]:
+    task = agent.run(task)
+</code></pre>
+    <p class="mono" style="font-size:12px; color:var(--ink-faint);">Simplified controller loop — production version adds retries, timeouts, and per-agent logging.</p>
+
+    <h2>What broke, in order</h2>
+
+    <h3>1. The analyst agent laundered disagreement into consensus</h3>
+    <p>Early on, when two sources conflicted, the analyst would just pick the more confidently-worded one and present it as fact. The fix wasn't a smarter prompt — it was changing the analyst's output schema to require a <code>confidence</code> and <code>disagreement</code> field per theme, so there was no valid output shape that let it skip the conflict.</p>
+
+    <h3>2. The fact-checker re-trusted its own source</h3>
+    <p>Giving the fact-check agent the same source list as the analyst meant it was "verifying" claims against the exact documents that produced them — a closed loop that verified nothing. The fix: the fact-checker gets the claim only, not the source, and has to search independently.</p>
+
+    <h3>3. Silent tool failures</h3>
+    <p>When the search API rate-limited, the search agent would quietly return an empty list and the pipeline would happily write a brief with zero sources. Now every agent validates its own output against a minimum bar (e.g. "at least 3 sources") and raises rather than passing along an empty result.</p>
+
+    <blockquote>The most useful failure mode to design for isn't the wrong answer — it's the confident empty one.</blockquote>
+
+    <h2>Stack</h2>
+    <ul>
+      <li>Orchestration: a plain Python controller (no framework) — the pipeline is short enough that an agent framework added more indirection than it saved.</li>
+      <li>Models: a fast model for search-query generation and clustering, a stronger model reserved for the fact-check and writing steps.</li>
+      <li>Tools: web search API, a lightweight content-extraction step, and a JSON-schema validator between every agent handoff.</li>
+    </ul>
+
+    <h2>What I'd change next</h2>
+    <p>The fact-check step currently runs sequentially after the full draft; running it earlier, per-claim, as the analyst produces them, would likely cut latency substantially. That's the next iteration — logged here once it ships.</p>
+
+    <div class="divider-row"><div class="line"></div><span>End of case study</span><div class="line"></div></div>
+
+    <p style="text-align:center;"><a href="projects.html" class="btn btn-ghost">← Back to all projects</a></p>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px;">AI HUB <span class="brand-tag">Agentic</span></div>
+        <p style="font-size:14px; max-width:32ch;">A working lab notebook on AI agents, scripting, and automation — published as case studies, not sales pages.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="blog.html">Field notes</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="projects.html">Multi-Agent Systems</a></li>
+          <li><a href="projects.html">Scripting Agents</a></li>
+          <li><a href="projects.html">Automation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://github.com" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AI HUB — Agentic</span>
+      <span>Built &amp; documented by hand</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
