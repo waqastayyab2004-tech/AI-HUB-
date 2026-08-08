@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Hub — Learning Paths</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .learn-hero{ max-width: 640px; margin-bottom: 32px; }
+  .learn-hero h1{ font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; margin: 0 0 10px; }
+  .learn-hero p{ color: var(--ink-soft); margin: 0; font-size: 15px; }
+
+  .paths{ display: flex; flex-direction: column; gap: 18px; }
+  .path-card{ padding: 22px; }
+  .path-top{ display: flex; gap: 16px; align-items: flex-start; }
+  .path-icon{
+    width: 46px; height: 46px; border-radius: var(--radius-sm); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px;
+  }
+  .path-title{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 19px; }
+  .path-desc{ color: var(--ink-soft); font-size: 14px; margin: 4px 0 0; max-width: 560px; }
+  .path-level{ margin-left: auto; flex-shrink: 0; }
+
+  .progress-track{
+    height: 6px; border-radius: 999px; background: var(--border);
+    margin-top: 16px; overflow: hidden;
+  }
+  .progress-fill{ height: 100%; background: var(--primary); border-radius: 999px; transition: width 0.25s ease; }
+  .progress-row{ display: flex; justify-content: space-between; margin-top: 8px; }
+  .progress-label{ font-size: 12px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+
+  .lessons{
+    margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .lesson{
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 6px; border-radius: var(--radius-sm);
+  }
+  .lesson:hover{ background: var(--bg); }
+  .lesson-check{
+    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+    border: 2px solid var(--line); display: flex; align-items: center; justify-content: center;
+    background: var(--surface);
+  }
+  .lesson-check.done{ background: var(--primary); border-color: var(--primary); }
+  .lesson-check.done::after{ content: '✓'; color: #fff; font-size: 11px; font-weight: 700; }
+  .lesson-title{ font-size: 13.5px; font-weight: 500; flex: 1; }
+  .lesson-check.done ~ .lesson-title{ color: var(--muted); text-decoration: line-through; }
+  .lesson-dur{ font-size: 11.5px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+
+  @media (max-width: 640px){
+    .path-top{ flex-wrap: wrap; }
+    .path-level{ margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">AI</span> AI Hub</a>
+    <div class="nav-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Search learning paths…
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Feed</a>
+      <a href="videos.html" class="nav-link">Videos</a>
+      <a href="learning.html" class="nav-link active">Learn</a>
+      <a href="projects.html" class="nav-link">Projects</a>
+      <a href="blog.html" class="nav-link">Blog</a>
+    </div>
+    <div class="nav-avatar">W</div>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="learn-hero">
+    <h1>Learning paths</h1>
+    <p>Structured, ordered lessons — click a lesson to mark it done and track progress through each path. Start wherever matches where you're at.</p>
+  </div>
+
+  <div class="paths">
+
+    <!-- Path 1 -->
+    <div class="card path-card">
+      <div class="path-top">
+        <div class="path-icon" style="background:linear-gradient(135deg,var(--primary),#3E9C86);">🧠</div>
+        <div>
+          <div class="path-title">Agentic Systems 101</div>
+          <p class="path-desc">What separates a real agent from a chained prompt — planning, memory, and tool use, explained from first principles.</p>
+        </div>
+        <span class="tag" data-type="update" style="margin-left:auto;">Beginner</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+      <div class="progress-row"><span class="progress-label">0 / 6 lessons</span><span class="progress-label">~1.5 hrs total</span></div>
+      <div class="lessons">
+        <label class="lesson"><span class="lesson-check done"></span><span class="lesson-title">What "agentic" actually means</span><span class="lesson-dur">08:12</span></label>
+        <label class="lesson"><span class="lesson-check done"></span><span class="lesson-title">Planning vs. reacting</span><span class="lesson-dur">10:45</span></label>
+        <label class="lesson"><span class="lesson-check done"></span><span class="lesson-title">Giving an agent memory</span><span class="lesson-dur">12:30</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Tool use, step by step</span><span class="lesson-dur">14:02</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">When agents should stop</span><span class="lesson-dur">09:18</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Build your first simple agent</span><span class="lesson-dur">21:40</span></label>
+      </div>
+    </div>
+
+    <!-- Path 2 -->
+    <div class="card path-card">
+      <div class="path-top">
+        <div class="path-icon" style="background:linear-gradient(135deg,var(--indigo),#7C79C9);">🧩</div>
+        <div>
+          <div class="path-title">Building Autonomous Pipelines</div>
+          <p class="path-desc">Chain multiple agents into a pipeline that plans, retrieves, verifies, and reports — the pattern behind the Research Pipeline project.</p>
+        </div>
+        <span class="tag" data-type="project" style="margin-left:auto;">Intermediate</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+      <div class="progress-row"><span class="progress-label">0 / 5 lessons</span><span class="progress-label">~2 hrs total</span></div>
+      <div class="lessons">
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Designing a pipeline of narrow agents</span><span class="lesson-dur">15:20</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">The planner-retriever-verifier pattern</span><span class="lesson-dur">18:04</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Handling failures between agents</span><span class="lesson-dur">13:55</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Adding a human review step</span><span class="lesson-dur">11:10</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Case study: the research pipeline, end to end</span><span class="lesson-dur">24:33</span></label>
+      </div>
+    </div>
+
+    <!-- Path 3 -->
+    <div class="card path-card">
+      <div class="path-top">
+        <div class="path-icon" style="background:linear-gradient(135deg,var(--amber),#E0A73A);">📐</div>
+        <div>
+          <div class="path-title">Evaluating Agents Properly</div>
+          <p class="path-desc">How to test whether an agent is actually working — beyond "it looked right in the demo."</p>
+        </div>
+        <span class="tag" data-type="article" style="margin-left:auto;">Intermediate</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:0%;"></div></div>
+      <div class="progress-row"><span class="progress-label">0 / 4 lessons</span><span class="progress-label">~1.2 hrs total</span></div>
+      <div class="lessons">
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Why demos lie</span><span class="lesson-dur">09:47</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Building a small eval set</span><span class="lesson-dur">16:12</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Scoring correctness vs. process</span><span class="lesson-dur">14:29</span></label>
+        <label class="lesson"><span class="lesson-check"></span><span class="lesson-title">Catching regressions before users do</span><span class="lesson-dur">12:03</span></label>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">AI Hub — built and maintained by Waqas Tayyab</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

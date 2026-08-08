@@ -3,267 +3,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI HUB — Agentic | Multi-Agent Systems & AI Automation Lab</title>
-<meta name="description" content="A working lab notebook of AI agents, scripting automations, and multi-agent pipelines — real projects you can study, fork, and learn from.">
+<title>AI Hub — Feed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .layout{
+    display: grid;
+    grid-template-columns: 260px minmax(0,1fr) 300px;
+    gap: 20px;
+    align-items: start;
+  }
+  /* Left rail */
+  .profile-card{ text-align: center; overflow: hidden; }
+  .profile-cover{ height: 56px; background: linear-gradient(120deg, var(--primary), var(--indigo)); }
+  .profile-body{ padding: 0 18px 18px; margin-top: -28px; }
+  .profile-avatar{
+    width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 10px;
+    border: 3px solid var(--surface); font-size: 22px;
+  }
+  .profile-name{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 17px; }
+  .profile-role{ color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .profile-stats{
+    display: flex; justify-content: space-around;
+    margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .profile-stats div strong{ display: block; font-size: 15px; }
+  .profile-stats div span{ font-size: 11px; color: var(--muted); }
+  .rail-nav{ padding: 8px; }
+  .rail-nav li a{
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 500; color: var(--ink-soft);
+  }
+  .rail-nav li a:hover{ background: var(--bg); color: var(--ink); }
+  .rail-nav li a .dot{ width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Composer */
+  .composer{ padding: 16px; }
+  .composer-row{ display: flex; gap: 12px; }
+  .composer-input{
+    flex: 1; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 999px; padding: 11px 18px; color: var(--muted); font-size: 14px;
+  }
+  .composer-actions{
+    display: flex; gap: 6px; margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .composer-chip{
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 7px 12px; border-radius: var(--radius-sm);
+  }
+  .composer-chip:hover{ background: var(--bg); }
+
+  /* Feed */
+  .feed{ display: flex; flex-direction: column; gap: 16px; }
+  .post{ padding: 18px; }
+  .post-head{ display: flex; gap: 12px; align-items: flex-start; }
+  .post-head .avatar{ width: 42px; height: 42px; font-size: 15px; }
+  .post-meta-name{ font-weight: 600; font-size: 14.5px; }
+  .post-meta-sub{ font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+  .post-body{ margin: 12px 0 0 0; padding-left: 15px; font-size: 14.5px; }
+  .post-body h3{ margin: 4px 0 6px; font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; }
+  .post-body p{ margin: 0; color: var(--ink-soft); }
+  .post-media{
+    margin-top: 12px; border-radius: var(--radius-sm); overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .thumb{
+    aspect-ratio: 16/8; display: flex; align-items: center; justify-content: center;
+    position: relative; color: #fff;
+  }
+  .thumb-code{ background: linear-gradient(135deg, #1B2A29, #0F6E5C); }
+  .thumb-video{ background: linear-gradient(135deg, #3A2E55, #4B4A8F); }
+  .thumb-project{ background: linear-gradient(135deg, #6E3B23, #C98A1B); }
+  .thumb-caption{
+    position: absolute; bottom: 10px; left: 12px; right: 12px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: 0.85;
+  }
+  .play-btn{
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(255,255,255,0.18); border: 1.5px solid rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .post-footer{
+    display: flex; align-items: center; gap: 4px;
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .post-action{
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 7px 12px; border-radius: var(--radius-sm); background: none; border: none;
+  }
+  .post-action:hover{ background: var(--bg); color: var(--ink); }
+  .post-action.liked{ color: var(--accent); }
+  .post-action svg{ width: 16px; height: 16px; }
+
+  /* Right rail */
+  .widget{ padding: 16px; }
+  .widget h4{
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted); margin: 0 0 12px;
+  }
+  .trend-item{ display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .trend-item:last-child{ border-bottom: none; }
+  .trend-item .name{ font-size: 13.5px; font-weight: 500; }
+  .trend-item .count{ font-size: 11.5px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+  .suggest-item{ display: flex; align-items: center; gap: 10px; padding: 9px 0; }
+  .suggest-item .avatar{ width: 34px; height: 34px; font-size: 12px; }
+  .suggest-item .name{ font-size: 13.5px; font-weight: 600; }
+  .suggest-item .role{ font-size: 11.5px; color: var(--muted); }
+  .suggest-item .btn{ margin-left: auto; }
+
+  @media (max-width: 980px){
+    .layout{ grid-template-columns: 1fr; }
+    .left-rail, .right-rail{ display: none; }
+  }
+</style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="wrap">
-    <a href="index.html" class="brand">AI HUB <span class="brand-tag">Agentic</span></a>
-    <nav class="main-nav">
-      <a href="index.html" class="active">Home</a>
-      <a href="projects.html">Projects</a>
-      <a href="blog.html">Field Notes</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">AI</span> AI Hub</a>
+    <div class="nav-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Search agents, projects, articles…
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">Feed</a>
+      <a href="videos.html" class="nav-link">Videos</a>
+      <a href="learning.html" class="nav-link">Learn</a>
+      <a href="projects.html" class="nav-link">Projects</a>
+      <a href="blog.html" class="nav-link">Blog</a>
+    </div>
+    <div class="nav-avatar">W</div>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
-</header>
+</nav>
 
-<section class="hero">
-  <div class="wrap">
-    <div>
-      <p class="eyebrow">AI / ML Automation · Agentic Systems Lab</p>
-      <h1>I build <em>AI agents</em> that do the work — then write down exactly how.</h1>
-      <p class="lede">AI HUB is a running lab notebook of automation and multi-agent projects: scripts, orchestration patterns, and full agent pipelines, published as case studies so you can learn from the actual build — not a summary of it.</p>
-      <div class="cta-row">
-        <a href="projects.html" class="btn btn-primary">Browse projects →</a>
-        <a href="blog.html" class="btn btn-ghost">Read field notes</a>
-      </div>
-      <div class="stat-row">
-        <div class="stat"><b>12+</b><span>Agents shipped</span></div>
-        <div class="stat"><b>04</b><span>Active pipelines</span></div>
-        <div class="stat"><b>20+</b><span>Tools &amp; frameworks</span></div>
-      </div>
-    </div>
+<main class="page">
+  <div class="layout">
 
-    <div class="pipeline-figure">
-      <p class="fig-label">Live example — content research pipeline</p>
-      <svg viewBox="0 0 460 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of four agents connected in sequence: Search Agent, Analyst Agent, Fact-Check Agent, and Writer Agent">
-        <line x1="70" y1="60" x2="70" y2="200" class="pline"/>
-        <line x1="70" y1="60" x2="230" y2="60" class="pline"/>
-        <line x1="230" y1="60" x2="230" y2="200" class="pline"/>
-        <line x1="230" y1="130" x2="390" y2="130" class="pline"/>
-        <line x1="70" y1="200" x2="230" y2="200" class="pline"/>
-        <line x1="230" y1="200" x2="390" y2="200" class="pline"/>
-
-        <g class="pnode active">
-          <circle cx="70" cy="60" r="9"/>
-          <circle cx="70" cy="60" r="3" fill="#fff" class="pdot"/>
-          <text x="90" y="56" class="pnode-label">search_agent</text>
-          <text x="90" y="70" class="pnode-label" fill="#8b8e96">queries · dedupes sources</text>
-        </g>
-
-        <g class="pnode">
-          <circle cx="70" cy="200" r="9"/>
-          <text x="90" y="196" class="pnode-label">analyst_agent</text>
-          <text x="90" y="210" class="pnode-label" fill="#8b8e96">clusters findings</text>
-        </g>
-
-        <g class="pnode done">
-          <circle cx="230" cy="60" r="9"/>
-          <text x="250" y="56" class="pnode-label">factcheck_agent</text>
-          <text x="250" y="70" class="pnode-label" fill="#8b8e96">cross-verifies claims</text>
-        </g>
-
-        <g class="pnode">
-          <circle cx="230" cy="200" r="9"/>
-          <text x="250" y="196" class="pnode-label">writer_agent</text>
-          <text x="250" y="210" class="pnode-label" fill="#8b8e96">drafts the brief</text>
-        </g>
-
-        <g class="pnode">
-          <circle cx="390" cy="130" r="11"/>
-          <text x="390" y="150" class="pnode-label" text-anchor="middle" fill="#16181d" font-weight="600">output</text>
-        </g>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Why this exists</p>
-        <h2>Case studies, not marketing copy.</h2>
-      </div>
-      <p class="desc">Every project here shipped in a real workflow of mine. The write-ups include the architecture, the failure modes, and the code — the parts most "AI content" leaves out.</p>
-    </div>
-    <div class="grid-3">
-      <div class="card">
-        <div class="entry-num">01 / method</div>
-        <h3>Full pipeline architecture</h3>
-        <p>Each project shows the agent graph — who calls whom, what tools they hold, and where a human checkpoint sits in the loop.</p>
-      </div>
-      <div class="card">
-        <div class="entry-num">02 / method</div>
-        <h3>What actually broke</h3>
-        <p>Hallucinated tool calls, runaway loops, brittle prompts. The field notes cover the failure and the fix, not just the happy path.</p>
-      </div>
-      <div class="card">
-        <div class="entry-num">03 / method</div>
-        <h3>Reusable patterns</h3>
-        <p>Orchestrator-vs-swarm, retrieval scaffolds, guardrail design — the same handful of patterns recur, so you learn the transferable shape.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-alt">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Latest builds</p>
-        <h2>Featured projects</h2>
-      </div>
-      <a href="projects.html" class="btn btn-ghost">View all projects →</a>
-    </div>
-
-    <div class="grid-3">
-      <div class="card">
-        <span class="status status-live">Live</span>
-        <div class="entry-num" style="margin-top:14px;">Log 004</div>
-        <div class="pipeline-strip">
-          <span class="node">search</span><span class="arrow">→</span>
-          <span class="node">analyst</span><span class="arrow">→</span>
-          <span class="node">fact-check</span><span class="arrow">→</span>
-          <span class="node">writer</span>
-        </div>
-        <h3>Autonomous Research Pipeline</h3>
-        <p>Four agents turn a one-line topic into a sourced, fact-checked research brief — no human in the loop until final review.</p>
-        <div class="card-foot">
-          <span class="tag">Multi-Agent</span>
-          <a href="project-autonomous-research-pipeline.html" class="read-link">Read case study →</a>
+    <!-- LEFT RAIL -->
+    <aside class="left-rail" style="display:flex; flex-direction:column; gap:16px;">
+      <div class="card profile-card">
+        <div class="profile-cover"></div>
+        <div class="profile-body">
+          <div class="avatar profile-avatar online" style="margin-inline:auto;">W</div>
+          <div class="profile-name">Waqas Tayyab</div>
+          <div class="profile-role">Building autonomous agent systems</div>
+          <div class="profile-stats">
+            <div><strong>412</strong><span>Followers</span></div>
+            <div><strong>18</strong><span>Projects</span></div>
+            <div><strong>26</strong><span>Articles</span></div>
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <span class="status status-live">Live</span>
-        <div class="entry-num" style="margin-top:14px;">Log 003</div>
-        <div class="pipeline-strip">
-          <span class="node">watcher</span><span class="arrow">→</span>
-          <span class="node">diagnoser</span><span class="arrow">→</span>
-          <span class="node">patcher</span>
-        </div>
-        <h3>Site Monitor &amp; Self-Heal Agent</h3>
-        <p>A scripting agent that watches uptime, diagnoses the failure class, and opens a draft fix — engineers approve, not write.</p>
-        <div class="card-foot">
-          <span class="tag">Scripting</span>
-          <a href="projects.html" class="read-link">Read case study →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <span class="status status-progress">In progress</span>
-        <div class="entry-num" style="margin-top:14px;">Log 005</div>
-        <div class="pipeline-strip">
-          <span class="node">classifier</span><span class="arrow">→</span>
-          <span class="node">drafter</span><span class="arrow">→</span>
-          <span class="node">escalator</span>
-        </div>
-        <h3>Inbox Triage Swarm</h3>
-        <p>A small swarm of agents that categorizes incoming mail, drafts replies for routine cases, and escalates the ambiguous ones.</p>
-        <div class="card-foot">
-          <span class="tag">Automation</span>
-          <a href="projects.html" class="read-link">Read case study →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Learn</p>
-        <h2>Field notes</h2>
-      </div>
-      <a href="blog.html" class="btn btn-ghost">All field notes →</a>
-    </div>
-    <div class="log-list">
-      <a href="article-what-makes-agent-agentic.html" class="log-row">
-        <span class="num mono">FN·01</span>
-        <span class="title">What Makes an Agent "Agentic"? A Practical Definition</span>
-        <span class="tag">Concepts</span>
-        <span class="meta">7 min read</span>
-      </a>
-      <a href="blog.html" class="log-row">
-        <span class="num mono">FN·02</span>
-        <span class="title">Orchestrator vs. Swarm: Two Patterns for Multi-Agent Design</span>
-        <span class="tag">Architecture</span>
-        <span class="meta">9 min read</span>
-      </a>
-      <a href="blog.html" class="log-row">
-        <span class="num mono">FN·03</span>
-        <span class="title">Prompt Scaffolding for Reliable Tool Use</span>
-        <span class="tag">Prompt Eng.</span>
-        <span class="meta">6 min read</span>
-      </a>
-      <a href="blog.html" class="log-row">
-        <span class="num mono">FN·04</span>
-        <span class="title">From Script to Agent: When Automation Needs Autonomy</span>
-        <span class="tag">Automation</span>
-        <span class="meta">8 min read</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="section-alt">
-  <div class="wrap" style="text-align:center; max-width:720px;">
-    <p class="eyebrow" style="justify-content:center;">Get in the loop</p>
-    <h2 style="font-size:clamp(24px,3.4vw,32px);">New pipeline goes up roughly every two weeks.</h2>
-    <p style="margin-bottom:26px;">No newsletter spam — just a note when a new project or field note is published.</p>
-    <a href="contact.html" class="btn btn-primary">Get notified →</a>
-  </div>
-</section>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-grid">
-      <div>
-        <div class="brand" style="margin-bottom:12px;">AI HUB <span class="brand-tag">Agentic</span></div>
-        <p style="font-size:14px; max-width:32ch;">A working lab notebook on AI agents, scripting, and automation — published as case studies, not sales pages.</p>
-      </div>
-      <div>
-        <h4>Explore</h4>
+      <nav class="card rail-nav">
         <ul>
-          <li><a href="projects.html">Projects</a></li>
-          <li><a href="blog.html">Field notes</a></li>
-          <li><a href="about.html">About</a></li>
+          <li><a href="index.html"><span class="dot" style="background:var(--primary)"></span> Feed</a></li>
+          <li><a href="videos.html"><span class="dot" style="background:var(--accent)"></span> Videos</a></li>
+          <li><a href="learning.html"><span class="dot" style="background:var(--indigo)"></span> Learning paths</a></li>
+          <li><a href="projects.html"><span class="dot" style="background:var(--amber)"></span> Projects</a></li>
+          <li><a href="blog.html"><span class="dot" style="background:var(--muted)"></span> Blog</a></li>
+          <li><a href="contact.html"><span class="dot" style="background:var(--line)"></span> Contact</a></li>
         </ul>
-      </div>
-      <div>
-        <h4>Categories</h4>
-        <ul>
-          <li><a href="projects.html">Multi-Agent Systems</a></li>
-          <li><a href="projects.html">Scripting Agents</a></li>
-          <li><a href="projects.html">Automation</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="https://github.com" target="_blank" rel="noopener">GitHub ↗</a></li>
-          <li><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn ↗</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 AI HUB — Agentic</span>
-      <span>Built &amp; documented by hand</span>
-    </div>
-  </div>
-</footer>
+      </nav>
+    </aside>
 
-<script src="js/main.js"></script>
+    <!-- CENTER FEED -->
+    <section>
+      <div class="card composer">
+        <div class="composer-row">
+          <div class="avatar" style="width:42px;height:42px;font-size:15px;">W</div>
+          <div class="composer-input">Share an update, a demo, or something you shipped…</div>
+        </div>
+        <div class="composer-actions">
+          <div class="composer-chip">🎬 Video</div>
+          <div class="composer-chip">🧩 Project</div>
+          <div class="composer-chip">📝 Article</div>
+          <div class="composer-chip" style="margin-left:auto;"><button class="btn btn-primary btn-sm">Post</button></div>
+        </div>
+      </div>
+
+      <div class="feed" style="margin-top:16px;">
+
+        <!-- Post: Update -->
+        <article class="card post">
+          <div class="post-head">
+            <div class="avatar online">W</div>
+            <div>
+              <div class="post-meta-name">Waqas Tayyab</div>
+              <div class="post-meta-sub mono">2h ago · Public</div>
+            </div>
+            <span class="tag" data-type="update" style="margin-left:auto;"><span class="tag-dot"></span>Update</span>
+          </div>
+          <div class="signal" data-type="update">
+            <div class="post-body">
+              <p>Shipped v2 of the autonomous research pipeline today — it now cites its sources inline and re-checks its own conclusions before handing back a report. Genuinely useful for the first time. Writeup coming this week.</p>
+            </div>
+          </div>
+          <div class="post-footer">
+            <button class="post-action" data-like>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8.2 2.6 4 6.5 4c2 0 3.4 1.1 4.2 2.3.4.6.8 1.3 1.3 1.3s.9-.7 1.3-1.3C14.1 5.1 15.5 4 17.5 4 21.4 4 23.3 8.2 21.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span data-like-count>128</span>
+            </button>
+            <button class="post-action">💬 24 comments</button>
+            <button class="post-action" style="margin-left:auto;">↗ Share</button>
+          </div>
+        </article>
+
+        <!-- Post: Project -->
+        <article class="card post">
+          <div class="post-head">
+            <div class="avatar online" style="background:linear-gradient(135deg,var(--indigo),#7C79C9);">W</div>
+            <div>
+              <div class="post-meta-name">Waqas Tayyab</div>
+              <div class="post-meta-sub mono">1d ago · Project launch</div>
+            </div>
+            <span class="tag" data-type="project" style="margin-left:auto;"><span class="tag-dot"></span>Project</span>
+          </div>
+          <div class="signal" data-type="project">
+            <div class="post-body">
+              <h3>Autonomous Research Pipeline</h3>
+              <p>A multi-agent system that plans a research question, gathers sources, cross-checks claims, and drafts a cited report — with a human review step before anything ships.</p>
+            </div>
+          </div>
+          <a href="project-autonomous-research-pipeline.html" class="post-media">
+            <div class="thumb thumb-project">
+              <span class="mono thumb-caption">03 AGENTS · PLANNER → RETRIEVER → VERIFIER</span>
+            </div>
+          </a>
+          <div class="post-footer">
+            <button class="post-action" data-like>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8.2 2.6 4 6.5 4c2 0 3.4 1.1 4.2 2.3.4.6.8 1.3 1.3 1.3s.9-.7 1.3-1.3C14.1 5.1 15.5 4 17.5 4 21.4 4 23.3 8.2 21.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span data-like-count>342</span>
+            </button>
+            <button class="post-action">💬 51 comments</button>
+            <a href="project-autonomous-research-pipeline.html" class="post-action" style="margin-left:auto;">View project →</a>
+          </div>
+        </article>
+
+        <!-- Post: Video -->
+        <article class="card post">
+          <div class="post-head">
+            <div class="avatar online" style="background:linear-gradient(135deg,var(--accent),var(--amber));">W</div>
+            <div>
+              <div class="post-meta-name">Waqas Tayyab</div>
+              <div class="post-meta-sub mono">3d ago · New video</div>
+            </div>
+            <span class="tag" data-type="video" style="margin-left:auto;"><span class="tag-dot"></span>Video</span>
+          </div>
+          <div class="signal" data-type="video">
+            <div class="post-body">
+              <h3>What actually makes an agent "agentic"?</h3>
+              <p>Breaking down the difference between a chained prompt and a system that plans, acts, and revises — with real examples.</p>
+            </div>
+          </div>
+          <a href="videos.html" class="post-media">
+            <div class="thumb thumb-video">
+              <div class="play-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+              <span class="mono thumb-caption">12:41</span>
+            </div>
+          </a>
+          <div class="post-footer">
+            <button class="post-action" data-like>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8.2 2.6 4 6.5 4c2 0 3.4 1.1 4.2 2.3.4.6.8 1.3 1.3 1.3s.9-.7 1.3-1.3C14.1 5.1 15.5 4 17.5 4 21.4 4 23.3 8.2 21.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span data-like-count>209</span>
+            </button>
+            <button class="post-action">💬 33 comments</button>
+            <a href="videos.html" class="post-action" style="margin-left:auto;">Watch →</a>
+          </div>
+        </article>
+
+        <!-- Post: Article -->
+        <article class="card post">
+          <div class="post-head">
+            <div class="avatar online" style="background:linear-gradient(135deg,var(--amber),#E0A73A);">W</div>
+            <div>
+              <div class="post-meta-name">Waqas Tayyab</div>
+              <div class="post-meta-sub mono">5d ago · New article</div>
+            </div>
+            <span class="tag" data-type="article" style="margin-left:auto;"><span class="tag-dot"></span>Article</span>
+          </div>
+          <div class="signal" data-type="article">
+            <div class="post-body">
+              <h3>Why most "agents" are just retry loops</h3>
+              <p>A closer look at the gap between marketing and mechanism — and what real autonomy actually requires under the hood.</p>
+            </div>
+          </div>
+          <div class="post-footer">
+            <button class="post-action" data-like>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8.2 2.6 4 6.5 4c2 0 3.4 1.1 4.2 2.3.4.6.8 1.3 1.3 1.3s.9-.7 1.3-1.3C14.1 5.1 15.5 4 17.5 4 21.4 4 23.3 8.2 21.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span data-like-count>176</span>
+            </button>
+            <button class="post-action">💬 19 comments</button>
+            <a href="blog.html" class="post-action" style="margin-left:auto;">Read article →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- RIGHT RAIL -->
+    <aside class="right-rail" style="display:flex; flex-direction:column; gap:16px;">
+      <div class="card widget">
+        <h4>Trending in AI</h4>
+        <div class="trend-item"><span class="name">#AgenticWorkflows</span><span class="count">2.1K posts</span></div>
+        <div class="trend-item"><span class="name">#MultiAgentSystems</span><span class="count">1.4K posts</span></div>
+        <div class="trend-item"><span class="name">#ToolUse</span><span class="count">980 posts</span></div>
+        <div class="trend-item"><span class="name">#EvalPipelines</span><span class="count">640 posts</span></div>
+      </div>
+
+      <div class="card widget">
+        <h4>People to follow</h4>
+        <div class="suggest-item">
+          <div class="avatar" style="background:linear-gradient(135deg,var(--primary),#3E9C86);">S</div>
+          <div><div class="name">Sara Malik</div><div class="role">Agent evals</div></div>
+          <button class="btn btn-ghost btn-sm">Follow</button>
+        </div>
+        <div class="suggest-item">
+          <div class="avatar" style="background:linear-gradient(135deg,var(--indigo),#7C79C9);">D</div>
+          <div><div class="name">Dev Osei</div><div class="role">RAG systems</div></div>
+          <button class="btn btn-ghost btn-sm">Follow</button>
+        </div>
+        <div class="suggest-item">
+          <div class="avatar" style="background:linear-gradient(135deg,var(--amber),#E0A73A);">L</div>
+          <div><div class="name">Lina Cho</div><div class="role">ML infra</div></div>
+          <button class="btn btn-ghost btn-sm">Follow</button>
+        </div>
+      </div>
+
+      <div class="card widget">
+        <h4>Continue learning</h4>
+        <p style="font-size:13.5px; color:var(--ink-soft); margin:0 0 10px;">Agentic Systems 101 — 3 of 8 lessons done.</p>
+        <a href="learning.html" class="btn btn-primary btn-sm" style="width:100%;">Resume path</a>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer class="site-footer">AI Hub — built and maintained by Waqas Tayyab</footer>
+
+<script src="assets/app.js"></script>
 </body>
 </html>
